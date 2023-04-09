@@ -6,12 +6,10 @@ timesteps = 1:500;
 maxUnitAmount = 15;
 maxGoldExtractedAtTimestep = 5;
 totalGoldAvailabilityAtVillage = 500;
-priceUpdateParameter = 0.75;
+priceUpdateParameter = 0.9;
 requiredAmoutForWindow = 10;% TODO This should be calculated on demand
 lostRelativeRentabilityOfSpace = 0; % For a single item the rentability is always the same
-% Mean round time % TODO use the distances digraph
-meanRoundTripTime = (1+7)/2;
-maxInventoryAtVillage = 200;
+maxInventoryAtVillage = 300;
 
 
 % Source and destination of trade caravans
@@ -54,7 +52,9 @@ for i = 1:length(consumers)
     economicInformation(village).gold = sum(consumerOffers(i,:));
 end
 for village = villages
-    economicInformation(village).updateTime = 1+gamrnd(1,meanRoundTripTime);
+    next = successors(distances,village);
+    meanDistance = mean(distances.Edges.Weight(findedge(distances,village,next)));
+    economicInformation(village).updateTime = 1+gamrnd(1,meanDistance);
 end
 
 oreAvailability = randomOreExtraction(repmat(timesteps,length(villages),1),maxGoldExtractedAtTimestep,totalGoldAvailabilityAtVillage);
@@ -87,7 +87,8 @@ for time = timesteps
 
         next = successors(distances,village);
         if economicInformation(village).updateTime < time && ~isempty(next)
-            nextUpdateDeltaTime = gamrnd(1,meanRoundTripTime);
+            meanDistance = mean(distances.Edges.Weight(findedge(distances,village,next)));
+            nextUpdateDeltaTime = gamrnd(1,meanDistance);
                 
             economicInformation(village).updateTime = time + nextUpdateDeltaTime;
             sourceVillage = village;
@@ -98,8 +99,8 @@ for time = timesteps
             end
 
 
-            tripCost = 1 + costs.Edges.Weight(findedge(costs,sourceVillage,targetVillage)); % TODO add cost
-
+            tripCost = 1 + costs.Edges.Weight(findedge(costs,sourceVillage,targetVillage));
+            
             deltaPrice = priceUpdateParameter*(economicInformation(sourceVillage).price - economicInformation(targetVillage).price);
             economicInformation(sourceVillage).price = economicInformation(sourceVillage).price - deltaPrice;
             economicInformation(targetVillage).price = economicInformation(sourceVillage).price + deltaPrice;
@@ -124,7 +125,6 @@ for time = timesteps
                     economicInformation(seller).gold = economicInformation(seller).gold + equilibriumPrice*toBuy;
                     economicInformation(buyer).gold = economicInformation(buyer).gold - equilibriumPrice*toBuy;
                     salesAllTime(time) = salesAllTime(time) + 1;
-                    disp("["+string(time)+"]"+"Sell "+string(toBuy)+" from "+string(seller)+" to "+string(buyer)+" at "+string(equilibriumPrice*toBuy));
                 end
             end
         end
