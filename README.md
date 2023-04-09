@@ -130,3 +130,9 @@ The probability function for a good getting bad is:
 $$ f(t) = min(S^{T-t},1) $$
 
 $T$ is the time when the product "dies". $S$ is the probability of selling the good in a single day.
+
+### Demand is unrealistic
+
+The consumer villages will always buy goods, at something near price equilibrium, the system does not take into account the amount of goods in circulation, nor does the consumer ever "satisfy its demand".
+
+A more realistic simulator would have ciclic demands for N products. So that each product bought lowers the price to be payed for the next item, until a counter restarts.
