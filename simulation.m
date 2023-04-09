@@ -213,7 +213,7 @@ legend('Gold extracted at timestep','Total gold');
 title('Aggregate of all gold extraction across time');
 if print
     g = gcf;
-    exportgraphics(g,'images/Gold_total.png','Resolution',300);
+    exportgraphics(g,'images/Gold_total.png','Resolution',600);
 end
 
 figure;
