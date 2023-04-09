@@ -127,9 +127,11 @@ This model is somewhat easily extended to perishable products. The only issue is
 
 The probability function for a good getting bad is: 
 
-$$ f(t) = min(S^{T-t},1) $$
+$$ f(t) = S^{T-t} $$
 
 $T$ is the time when the product "dies". $S$ is the probability of selling the good in a single day.
+
+![Proportional costs](other/images/Perishable.png)
 
 ### Demand is unrealistic
 
