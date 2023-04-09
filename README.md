@@ -38,9 +38,9 @@ Every village has raw gold waiting to be extracted. The gold extraction is done 
 
 This function is $f(t) = a e^{bt} (1 - e^{-t})$. The parameters $b$ and $a$ are given by the system of equations:
 
-$$ max = \int_{0}^{\inf} f(t) dx = \frac{a}{b^2-b} $$
+$$ total = \int_{0}^{\inf} f(t) dx = \frac{a}{b^2-b} $$
 
-$$ total = a e^{b ln(\frac{b-1}{b})} (1 - e^{-ln(\frac{b-1}{b})}) $$
+$$ maximum_t\{f(t)\} = max \Longleftrightarrow f'(t) = 0 \Longleftrightarrow max = a e^{b ln(\frac{b-1}{b})} (1 - e^{-ln(\frac{b-1}{b})}) $$
 
 Where `max` is the maximum gold extraction in a day and `total` is the total extraction in a village's lifetime.
 
